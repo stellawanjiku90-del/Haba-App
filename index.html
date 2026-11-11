@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f5ef" />
+  <meta name="description" content="A simple, transparent loan estimate for your next step." />
+  <title>Haba — a little room to move</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Haba home"><span class="brand-mark">h</span><span>haba</span></a>
+    <nav><a href="#how">How it works</a><a href="#trust">Our promise</a></nav>
+    <a class="top-cta" href="#estimate">Get an estimate <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> A little room to move</div>
+        <h1>Good things<br />start with <em>a little.</em></h1>
+        <p class="intro">A straightforward way to see what a small loan could look like. No pressure, no surprises — just a clear place to start.</p>
+        <a class="button button-dark" href="#estimate">See your estimate <span aria-hidden="true">↓</span></a>
+        <div class="hero-note"><span class="lock">✳</span> Your estimate stays on this device.</div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a sun rising over rolling green hills">
+        <div class="sun"></div><div class="bird bird-one">⌁</div><div class="bird bird-two">⌁</div>
+        <div class="hill hill-back"></div><div class="hill hill-front"></div>
+        <div class="art-label"><span>START WHERE<br />YOU ARE</span><span class="label-arrow">↘</span></div>
+        <div class="art-stamp">SMALL STEPS<br />ADD UP <span>✳</span></div>
+      </div>
+    </section>
+
+    <section class="estimate section" id="estimate">
+      <div class="section-heading"><div><div class="eyebrow"><span></span> Your numbers, your pace</div><h2>Make a plan<br />that feels <em>right.</em></h2></div><p>Move the sliders to explore a sample repayment. You can change the currency to match where you are.</p></div>
+      <div class="calculator">
+        <div class="controls">
+          <label class="field-label" for="currency">Your currency</label>
+          <div class="select-wrap"><select id="currency" aria-label="Choose currency">
+            <option value="KES">Kenyan Shilling (KES)</option><option value="NGN">Nigerian Naira (NGN)</option><option value="GHS">Ghanaian Cedi (GHS)</option><option value="UGX">Ugandan Shilling (UGX)</option><option value="TZS">Tanzanian Shilling (TZS)</option><option value="ZAR">South African Rand (ZAR)</option><option value="RWF">Rwandan Franc (RWF)</option><option value="XOF">West African CFA (XOF)</option><option value="USD">US Dollar (USD)</option>
+          </select><span>⌄</span></div>
+          <div class="range-block"><div class="range-head"><label class="field-label" for="amount">How much would help?</label><output id="amountOut">KES 25,000</output></div><input id="amount" type="range" min="5000" max="200000" step="5000" value="25000" /></div>
+          <div class="range-block"><div class="range-head"><label class="field-label" for="months">A comfortable timeframe</label><output id="monthsOut">6 months</output></div><input id="months" type="range" min="3" max="12" step="1" value="6" /></div>
+          <div class="fineprint">Illustrative estimate only. Rates and eligibility vary by country and provider.</div>
+        </div>
+        <div class="result-card"><div class="result-top"><span>YOUR SAMPLE PLAN</span><span class="sparkle">✳</span></div><div class="result-amount" id="monthly">KES 4,500</div><div class="result-caption">estimated each month</div><div class="result-divider"></div><div class="result-row"><span>Amount requested</span><strong id="principal">KES 25,000</strong></div><div class="result-row"><span>Estimated total to repay</span><strong id="total">KES 27,000</strong></div><div class="result-row"><span>Time to repay</span><strong id="term">6 months</strong></div><a class="button button-lime" href="#how">Explore how it works <span aria-hidden="true">↗</span></a><p class="result-disclaimer">Example uses a 16% flat annual rate for illustration. This is not a loan offer.</p></div>
+      </div>
+    </section>
+
+    <section class="steps section" id="how"><div class="steps-intro"><div class="eyebrow"><span></span> Clear from the start</div><h2>Small steps.<br /><em>Good decisions.</em></h2><p>Borrowing should feel understandable. Here’s how getting started works.</p></div><div class="step-list"><article><span class="step-number">01</span><div><h3>Find your number</h3><p>Use the estimator to explore an amount and timeframe that suit your plans.</p></div><span class="step-icon">↗</span></article><article><span class="step-number">02</span><div><h3>See the full picture</h3><p>A real provider should explain every fee, repayment date, and term before you apply.</p></div><span class="step-icon">◎</span></article><article><span class="step-number">03</span><div><h3>Choose what works</h3><p>Take your time. Only move forward when the repayment feels manageable.</p></div><span class="step-icon">✳</span></article></div></section>
+
+    <section class="promise" id="trust"><div class="promise-mark">✳</div><div><div class="eyebrow">A note from us</div><h2>Clarity comes<br />before <em>credit.</em></h2></div><p>Haba is a concept, not a lender. We don’t approve loans or collect applications. Before borrowing, check that any provider is licensed in your country and that you’re comfortable with the full cost.</p></section>
+  </main>
+  <footer><a class="brand" href="#home"><span class="brand-mark">h</span><span>haba</span></a><span>Made for a world of possibility.</span><a href="#trust">Borrow thoughtfully <span aria-hidden="true">↑</span></a></footer>
+  <script src="app.js"></script>
+</body>
+</html>
+
