@@ -1,5 +1,5 @@
 const panel = document.querySelector('#stepPanel');
-const API = window.HABA_API_URL || (location.hostname === 'haba-app.onrender.com' ? 'https://haba-api.onrender.com' : '');
+const API = window.HABA_API_URL || (location.hostname === 'haba-app.onrender.com' ? 'https://haba-api-3y14.onrender.com' : '');
 const stage = { step: 'loading', challengeId: '', registrationToken: '', applicationId: '', token: sessionStorage.getItem('haba_access_token') || '' };
 const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const field = (label,name,type='text',attrs='') => `<div class="field"><label for="${name}">${label} *</label><input id="${name}" name="${name}" type="${type}" required ${attrs}></div>`;
