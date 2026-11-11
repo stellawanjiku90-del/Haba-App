@@ -24,8 +24,9 @@ const explain = code => ({ registration_not_open:'Account registration is not op
 function landing(status) {
   setStatus('ready','STATUS');
   const canRegister=status.registrationEnabled;
+  const canSignIn=status.signInEnabled;
   shell('Kenya launch status',canRegister?'Welcome to Haba':'Getting ready for Kenya',canRegister?'Create an account using your Kenyan mobile number, or sign in to continue. No fee is charged to create an account.':'Account access and lending are currently closed while authorization and provider connections are completed.',
-    `<div class="data-box"><strong>Service status</strong><p>${status.applicationEnabled?'Applications are open. Loan decisions and payment services require their own active providers.':'Loan applications are not being accepted yet.'}</p></div>${canRegister?`<div class="button-row"><button class="button button-dark" data-action="register">Create account <span aria-hidden="true">→</span></button><button class="button button-light" data-action="login">Sign in</button></div>`:''}<p class="fee-note">Haba will not ask for an activation fee to unlock an unapproved loan.</p>`);
+    `<div class="data-box"><strong>Service status</strong><p>${status.applicationEnabled?'Applications are open. Loan decisions and payment services require their own active providers.':'Loan applications are not being accepted yet.'}</p></div>${canRegister||canSignIn?`<div class="button-row">${canRegister?'<button class="button button-dark" data-action="register">Create account <span aria-hidden="true">→</span></button>':''}${canSignIn?'<button class="button button-light" data-action="login">Sign in</button>':''}</div>`:''}<p class="fee-note">Haba will not ask for an activation fee to unlock an unapproved loan.</p>`);
 }
 async function load() {
   try {
@@ -94,8 +95,24 @@ function applicationForm() {
 }
 function references() {
   const relation='<select name="REL" required><option value="">Choose one</option><option value="family">Family</option><option value="friend">Friend</option><option value="colleague">Colleague</option><option value="neighbour">Neighbour</option><option value="other">Other</option></select>';
-  const card=n=>`<fieldset class="ref-card"><legend>Reference ${n}</legend><div class="field-grid">${field('Full name',`name${n}`)}${field('Kenyan mobile number',`phone${n}`,'tel','inputmode="tel" placeholder="+254700000000"')}<div class="field full"><label>Relationship *</label>${relation.replace('REL',`relationship${n}`)}</div></div></fieldset>`;
-  shell('References','Two people you trust','Enter only two contacts you have permission to share. Do not upload your address book.',form(card(1)+card(2),'Save references'));
+  const card=n=>`<fieldset class="ref-card"><legend>Reference ${n}</legend><button type="button" class="button button-light pick-contact" data-contact="${n}">Choose from contacts</button><div class="field-grid">${field('Full name',`name${n}`)}${field('Kenyan mobile number',`phone${n}`,'tel','inputmode="tel" placeholder="+254700000000"')}<div class="field full"><label>Relationship *</label>${relation.replace('REL',`relationship${n}`)}</div></div></fieldset>`;
+  shell('References','Two people you trust','Choose two contacts individually from your phone if your browser supports the contact picker, or enter their details. Haba does not upload your address book.',form(card(1)+card(2),'Save references'));
+  const pickers=[...panel.querySelectorAll('.pick-contact')];
+  if(!('contacts' in navigator) || !window.ContactsManager) pickers.forEach(button=>button.hidden=true);
+  for(const button of pickers) button.addEventListener('click',async()=>{
+    try {
+      const supported=await navigator.contacts.getProperties();
+      const props=['name','tel'].filter(p=>supported.includes(p));
+      const chosen=await navigator.contacts.select(props,{multiple:true});
+      if(!chosen.length)return;
+      const index=Number(button.dataset.contact);
+      const item=chosen[0];
+      const name=panel.querySelector(`[name="name${index}"]`);
+      const phone=panel.querySelector(`[name="phone${index}"]`);
+      if(name && item.name?.[0])name.value=item.name[0];
+      if(phone && item.tel?.[0])phone.value=item.tel[0].replace(/[\s()-]/g,'');
+    } catch { error('Contact selection was cancelled or is unavailable. You can enter the details yourself.'); }
+  });
 }
 function consents() {
   const purpose=(key,title,copy)=>`<label class="check-row"><input type="checkbox" name="${key}" required><span><strong>${title}</strong><br>${copy}</span></label>`;
