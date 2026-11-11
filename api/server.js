@@ -140,6 +140,7 @@ app.get('/healthz', asyncRoute(async (_req, res) => {
 app.get('/v1/product-status', (_req, res) => res.json({
   country: 'KE', currency: 'KES',
   registrationEnabled: feature('REGISTRATION_ENABLED') && configured(['SMS_AT_USERNAME', 'SMS_AT_API_KEY']) && Boolean(pool),
+  signInEnabled: Boolean(pool) && configured(['PHONE_HASH_KEY','SESSION_HASH_KEY']),
   applicationEnabled: feature('LENDING_ENABLED') && Boolean(process.env.CBK_AUTHORIZATION_REFERENCE) && Boolean(process.env.ODPC_REGISTRATION_REFERENCE) && feature('CREDIT_PROVIDER_ADAPTER_APPROVED'),
   creditReviewEnabled: false,
   activationPaymentEnabled: false,
@@ -216,7 +217,6 @@ app.post('/v1/auth/register', asyncRoute(async (req, res) => {
 }));
 
 app.post('/v1/auth/login', asyncRoute(async (req, res) => {
-  if (!feature('REGISTRATION_ENABLED')) throw new ApiError(423, 'registration_not_open');
   const body = z.object({ phone: phoneSchema, password: z.string().min(1).max(128) }).safeParse(req.body);
   if (!body.success) throw new ApiError(400, 'invalid_login');
   const digest = phoneDigest(body.data.phone);
@@ -245,7 +245,14 @@ app.get('/v1/me', authRequired, asyncRoute(async (req, res) => {
 
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
-  dateOfBirth: z.string().date(),
+  dateOfBirth: z.string().date().refine((value) => {
+    const birth = new Date(`${value}T00:00:00Z`);
+    const today = new Date();
+    let age = today.getUTCFullYear() - birth.getUTCFullYear();
+    const beforeBirthday = today.getUTCMonth() < birth.getUTCMonth() || (today.getUTCMonth() === birth.getUTCMonth() && today.getUTCDate() < birth.getUTCDate());
+    if (beforeBirthday) age -= 1;
+    return age >= 18 && birth <= today;
+  }),
   countyOrRegion: z.string().trim().min(2).max(100),
   workStatus: z.enum(['employed','self_employed','casual','student','unemployed']),
   employer: z.string().trim().max(120).optional().default(''),
