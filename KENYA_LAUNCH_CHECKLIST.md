@@ -52,4 +52,3 @@ The linked October 2024 procedure lists a KES 5,000 non-refundable application f
 - [Google Play SMS and Call Log permissions policy](https://support.google.com/googleplay/android-developer/answer/10208820)
 - [ODPC Guidance Note for Digital Credit Providers](https://www.odpc.go.ke/wp-content/uploads/2024/02/ODPC-Guidance-Note-for-Digital-Credit-Providers.pdf)
 - [ODPC data-handler registration](https://dataportal.odpc.go.ke/)
-
