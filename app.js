@@ -62,4 +62,3 @@ function handleSubmit(form) {
   render();
 }
 render();
-
