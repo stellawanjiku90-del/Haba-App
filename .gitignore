@@ -1,0 +1,9 @@
+node_modules/
+api/node_modules/
+api/.npm-cache/
+.env
+.env.*
+!.env.example
+*.log
+dist/
+build/
