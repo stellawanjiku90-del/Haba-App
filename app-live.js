@@ -110,7 +110,10 @@ function references() {
       const name=panel.querySelector(`[name="name${index}"]`);
       const phone=panel.querySelector(`[name="phone${index}"]`);
       if(name && item.name?.[0])name.value=item.name[0];
-      if(phone && item.tel?.[0])phone.value=item.tel[0].replace(/[\s()-]/g,'');
+      if(phone && item.tel?.[0]){
+        const raw=item.tel[0].replace(/[\s()-]/g,'');
+        phone.value=/^0[17]\d{8}$/.test(raw)?`+254${raw.slice(1)}`:/^254[17]\d{8}$/.test(raw)?`+${raw}`:raw;
+      }
     } catch { error('Contact selection was cancelled or is unavailable. You can enter the details yourself.'); }
   });
 }
